@@ -5,7 +5,34 @@
     <title>User Dashboard</title>
 </head>
 <body>
-  <h1>Edit</h1>  
-
+  <h1>Edit</h1>
+  <h2>Edit User {{user.id}}</h2>
+  {% if messages %}
+    <div class="messages">
+       {% for message in messages %}
+       <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
+       {% endfor %}
+    </div>
+  {% endif %}
+  <form class="edit" action="{% url 'update' user_id=user.id %}" method="post">
+    {% csrf_token %}
+    <label for="first_name">First Name</label>
+    <input type="text" name="first_name" value="{{user.first_name}}">
+    <label for="last_name">Last Name</label>
+    <input type="text" name="last_name" value="{{user.last_name}}">
+    <label for="email">Email</label>
+    <input type="text" name="email" value="{{user.email}}">
+    <input type="submit" value="Submit">
+  </form>
+  <form class="edit" action="{% url 'update_pass' user_id=user.id %}" method="post">
+    {% csrf_token %}
+    <label for="password">Password:</label>
+    <input type="password" name="password">
+    <label for="repeat">Repeat:</label>
+    <input type="password" name="repeat">
+    <input type="submit" value="Submit">
+  </form>
+  <br>
+  <a href="{%url 'show' user_id=user.id%}">Back</a>
 </body>
 </html>

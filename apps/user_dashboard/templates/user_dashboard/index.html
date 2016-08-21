@@ -8,9 +8,11 @@
   <h1>Hello</h1>
   {% if request.session.user%}
     <h2>Welcome {{request.session.user}}! You've successfully logged in!</h2>
+    <a href="{% url 'show' user_id=request.session.user %}">My Page</a>
   {% endif %}
   <a href="{% url 'register'%}">Register</a>
   <a href="{% url 'login'%}">Login</a>
+
 
 </body>
 </html>

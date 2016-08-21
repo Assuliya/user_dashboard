@@ -24,15 +24,6 @@ class UserManager(models.Manager):
         elif not EMAIL_REGEX.match(request.POST['email']):
             errors.append('Email is not valid')
 
-        if len(request.POST['password']) < 1:
-            errors.append('Password can not be empty')
-        elif len(request.POST['password']) < 8:
-            errors.append('Password should be more than 7 characters')
-        elif not PASS_REGEX.match(request.POST['password']):
-            errors.append('Password should contain at least one apper case letter and one number')
-
-        if request.POST['password'] != request.POST['repeat']:
-            errors.append('Password repeat did not match the password')
 
         try:
             user = User.objects.get(email = request.POST['email'])
@@ -42,9 +33,22 @@ class UserManager(models.Manager):
 
         if len(errors) > 0:
             return (False, errors)
-        pw_hash = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
-        user = self.create(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'], pw_hash=pw_hash)
-        return (True, user)
+        return (True, "none")
+
+    def validateRegPass(self, request):
+        errors = []
+        if len(request.POST['password']) < 1:
+            errors.append('Password can not be empty')
+        elif len(request.POST['password']) < 8:
+            errors.append('Password should be more than 7 characters')
+        elif not PASS_REGEX.match(request.POST['password']):
+            errors.append('Password should contain at least one apper case letter and one number')
+
+        if request.POST['password'] != request.POST['repeat']:
+            errors.append('Password repeat did not match the password')
+        if len(errors) > 0:
+            return (False, errors)
+        return (True, "none")
 
     def validateLogin(self, request):
         from bcrypt import hashpw, gensalt

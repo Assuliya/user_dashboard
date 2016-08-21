@@ -5,7 +5,12 @@
     <title>User Dashboard</title>
 </head>
 <body>
-  <h1>Hello</h1>  
+  <h1>Hello</h1>
+  {% if request.session.user%}
+    <h2>Welcome {{request.session.user}}! You've successfully logged in!</h2>
+  {% endif %}
+  <a href="{% url 'register'%}">Register</a>
+  <a href="{% url 'login'%}">Login</a>
 
 </body>
 </html>

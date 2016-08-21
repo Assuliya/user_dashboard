@@ -16,7 +16,9 @@ def edit(request, user_id):
     return render(request, 'user_dashboard/edit.html')
 
 def dashboard(request):
-    return render(request, 'user_dashboard/dashboard.html')
+    users = User.objects.all()
+    context = {'users':users}
+    return render(request, 'user_dashboard/dashboard.html', context)
 
 
 

@@ -13,7 +13,6 @@
        {% endfor %}
    </div>
    {% endif %}
-   <h2>Register</h2>
    <form action="{% url 'register_process' %}" method='post'>
      {% csrf_token %}
      First Name <input type="text" name="first_name">
@@ -24,6 +23,5 @@
      <input type="submit" value="Register">
    </form>
    <a href="{% url 'index'%}">Back</a>
-
 </body>
 </html>

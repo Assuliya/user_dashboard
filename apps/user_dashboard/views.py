@@ -35,7 +35,6 @@ def dashboard(request):
 def register_process(request):
     result = User.manager.validateReg(request)
     resultPass = User.manager.validateRegPass(request)
-
     if result[0] == False or resultPass[0] == False:
         errors = result[1]+resultPass[1]
         print_messages(request, errors)

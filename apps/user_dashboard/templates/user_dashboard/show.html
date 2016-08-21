@@ -16,6 +16,7 @@
     <p>{{user.created_at}}</p>
     <h3>Updated at:</h3>
     <p>{{user.updated_at}}</p>
+
     {% if not user.id == request.session.user%}
       <a href="{% url 'show' user_id=request.session.user%}">My page</a>
     {%endif%}
@@ -32,7 +33,7 @@
       Add message: <input type="textarea" name="message">
       <input type="submit" value="Add">
     </form>
-
+    
     <div class="messages">
       {%  for message in messages %}
          <h4>{{message.user_id_to.first_name}}</h4>
@@ -60,8 +61,6 @@
          {% endfor %}
          <h4>*********************************************</h4>
       {% endfor %}
-
     </div>
-
   </body>
 </html>

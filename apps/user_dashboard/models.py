@@ -24,7 +24,6 @@ class UserManager(models.Manager):
         elif not EMAIL_REGEX.match(request.POST['email']):
             errors.append('Email is not valid')
 
-
         try:
             user = User.objects.get(email = request.POST['email'])
             errors.append('This email is already being used')
@@ -43,9 +42,9 @@ class UserManager(models.Manager):
             errors.append('Password should be more than 7 characters')
         elif not PASS_REGEX.match(request.POST['password']):
             errors.append('Password should contain at least one apper case letter and one number')
-
         if request.POST['password'] != request.POST['repeat']:
             errors.append('Password repeat did not match the password')
+            
         if len(errors) > 0:
             return (False, errors)
         return (True, "none")

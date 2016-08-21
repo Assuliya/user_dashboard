@@ -23,7 +23,7 @@
 						<th><a href="{% url "show" user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
             <th>{{user.email}}</th>
             <th>{{user.created_at}}</th>
-            {%if user.user_level != 9%}
+            {%if user.user_level != 9 %}
               {% if user.user_level == 1 %}
                   <th>Normal<br> Online</th>
               {% endif %}
@@ -31,7 +31,7 @@
                   <th>Normal<br> Offline</th>
               {% endif %}
             {% else %}
-              <th>admin</th>
+              <th>Admin</th>
             {% endif %}
           </tr>
         {% endfor %}

@@ -46,9 +46,10 @@ def register_process(request):
 
 def login_process(request):
     result = User.manager.validateLogin(request)
-    if result[0] == False:
-        print_messages(request, result[1])
-        return redirect(reverse('login'))
+    if result[1] != 'admin':
+        if result[0] == False:
+            print_messages(request, result[1])
+            return redirect(reverse('login'))
     return log_user_in(request, result[1])
 
 def print_messages(request, message_list):

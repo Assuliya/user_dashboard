@@ -82,7 +82,8 @@ class User(models.Model):
 
 class Message(models.Model):
       message = models.TextField(max_length=1000)
-      user_id = models.ForeignKey(User)
+      user_id_to = models.ForeignKey(User, related_name='to_user')
+      user_id = models.ForeignKey(User, related_name='from_user')
       created_at = models.DateTimeField(auto_now_add=True)
       updated_at = models.DateTimeField(auto_now=True)
 

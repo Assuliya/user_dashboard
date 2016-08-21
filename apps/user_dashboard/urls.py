@@ -11,6 +11,9 @@ urlpatterns = [
     url(r'^user/register_process$', views.register_process, name='register_process'),
     url(r'^user/(?P<user_id>\d+)$', views.show, name='show'),
     url(r'^user/logout$', views.logout, name='logout'),
-    url(r'^user/(?P<user_id>\d+)/delete$', views.delete, name='delete')
+    url(r'^user/(?P<user_id>\d+)/delete$', views.delete, name='delete'),
+
+    url(r'^user/(?P<page_id>\d+)/add_message$', views.add_message, name='add_message'),
+    url(r'^user/(?P<message_id>\d+)/add_comment$', views.add_comment, name='add_comment')
 
 ]

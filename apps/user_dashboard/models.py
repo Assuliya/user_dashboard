@@ -44,7 +44,7 @@ class UserManager(models.Manager):
             errors.append('Password should contain at least one apper case letter and one number')
         if request.POST['password'] != request.POST['repeat']:
             errors.append('Password repeat did not match the password')
-            
+
         if len(errors) > 0:
             return (False, errors)
         return (True, "none")

@@ -3,11 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>User Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
   <h1>Register</h1>
   {% if messages %}
-   <div class="messages">
+   <div class="errors">
        {% for message in messages %}
        <h4{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h4>
        {% endfor %}
@@ -22,6 +24,7 @@
      Confirm Password <input type="password" name="repeat">
      <input type="submit" value="Register">
    </form>
+   <br>
    <a href="{% url 'index'%}">Back</a>
 </body>
 </html>

@@ -32,6 +32,9 @@ def dashboard(request):
     context = {'users':users}
     return render(request, 'user_dashboard/dashboard.html', context)
 
+def deletion_page(request):
+    return render(request, 'user_dashboard/delete.html')
+
 def register_process(request):
     result = User.manager.validateReg(request)
     resultPass = User.manager.validateRegPass(request)

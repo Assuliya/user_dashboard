@@ -3,63 +3,74 @@
   <head>
     <meta charset="utf-8">
     <title>User Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   </head>
   <body>
-    <h1>You're logged in as user {{request.session.user}}!</h1>
-    <h3>First Name:</h3>
-    <p>{{user.first_name}}</p>
-    <h3>Last Name:</h3>
-    <p>{{user.last_name}}</p>
-    <h3>Email:</h3>
-    <p>{{user.email}}</p>
-    <h3>Created at:</h3>
-    <p>{{user.created_at}}</p>
-    <h3>Updated at:</h3>
-    <p>{{user.updated_at}}</p>
-
-    {% if not user.id == request.session.user%}
-      <a href="{% url 'show' user_id=request.session.user%}">My page</a>
-    {%endif%}
     {% if user.id == request.session.user%}
-      <a href="{% url 'logout' %}">Logout</a>
-      <a href="{% url 'delete' user_id=request.session.user%}">Delete</a>
-      <a href="{% url 'edit' user_id=request.session.user%}">Edit</a>
-    {%endif%}
-    <a href="{% url 'dashboard'%}">Dashboard</a>
-
-    <br><br>
+      <h3 id="note">Your homepage!</h3>
+    {% endif %}
+    <div id="user_info">
+      <h3>First Name:</h3>
+      <p>{{user.first_name}}</p>
+      <h3>Last Name:</h3>
+      <p>{{user.last_name}}</p>
+      <h3>Email:</h3>
+      <p>{{user.email}}</p>
+      <h3>Created at:</h3>
+      <p>{{user.created_at}}</p>
+      <h3>Updated at:</h3>
+      <p>{{user.updated_at}}</p>
+      {% if not user.id == request.session.user%}
+        <a href="{% url 'show' user_id=request.session.user%}">My page</a>
+      {%endif%}
+      {% if user.id == request.session.user%}
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'deletion_page' %}">Delete</a>
+        <a href="{% url 'edit' user_id=request.session.user%}">Edit</a>
+      {%endif%}
+      <a href="{% url 'dashboard'%}">Dashboard</a>
+    </div>
+    <br>
     <form action="{% url 'add_message' page_id=user.id %}" method='post'>
       {% csrf_token %}
       Add message: <input type="textarea" name="message">
       <input type="submit" value="Add">
     </form>
-    
-    <div class="messages">
+
+    <div class="output">
       {%  for message in messages %}
-         <h4>{{message.user_id_to.first_name}}</h4>
-         <h3>Message:</h3>
-         <p>{{message.message}}</p>
-         <h3>User:</h3>
-         <p>{{message.user_id.first_name}} {{message.user_id.last_name}}</p>
-         <h3>Created at:</h3>
-         <p>{{message.created_at}}</p>
-         <form action="{% url 'add_comment' message_id=message.id%}" method='post'>
-           {% csrf_token %}
-           Add comment: <input type="textarea" name="comment">
-           <input type="submit" value="Add">
-         </form>
+         <div class="messages">
+           {% if message.user_id.id == request.session.user%}
+             <h3 class="user_text">{{message.message}}</h3>
+             <p class="user_text">{{message.user_id.first_name}} {{message.user_id.last_name}}</p>
+             <p class="user_text">{{message.created_at}}</p>
+           {% else %}
+             <h3>{{message.message}}</h3>
+             <p>{{message.user_id.first_name}} {{message.user_id.last_name}}</p>
+             <p>{{message.created_at}}</p>
+           {% endif %}
+           <form action="{% url 'add_comment' message_id=message.id%}" method='post'>
+             {% csrf_token %}
+             Add comment: <input type="textarea" name="comment">
+             <input type="submit" value="Add">
+           </form>
+         </div>
          {% for comment in comments %}
           {% if comment.message_id.id == message.id%}
-            <h4>{{comment.message_id.id}}</h4>
-            <h3>Comment:</h3>
-            <p>{{comment.comment}}</p>
-            <h3>User:</h3>
-            <p>{{comment.user_id.first_name}} {{comment.user_id.last_name}}</p>
-            <h3>Created at:</h3>
-            <p>{{message.created_at}}</p>
+            <div class="comments">
+              {% if comment.user_id.id == request.session.user%}
+                 <h3 class="user_text">{{comment.comment}}</h3>
+                 <p class="user_text">{{comment.user_id.first_name}} {{comment.user_id.last_name}}</p>
+                 <p class="user_text">{{message.created_at}}</p>
+              {% else %}
+                 <h3>{{comment.comment}}</h3>
+                 <p>{{comment.user_id.first_name}} {{comment.user_id.last_name}}</p>
+                 <p>{{message.created_at}}</p>
+              {% endif %}
+            </div>
           {% endif %}
          {% endfor %}
-         <h4>*********************************************</h4>
       {% endfor %}
     </div>
   </body>

@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>User Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
   <h1>Dashboard</h1>
@@ -19,19 +21,36 @@
      <tbody>
        {%  for user in users %}
           <tr>
-            <th>{{user.id}}</th>
-						<th><a href="{% url "show" user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
-            <th>{{user.email}}</th>
-            <th>{{user.created_at}}</th>
-            {%if user.user_level != 9%}
-              {% if user.user_level == 1 %}
-                  <th>Normal<br> Online</th>
-              {% endif %}
-              {% if user.user_level == 0 %}
-                  <th>Normal<br> Offline</th>
-              {% endif %}
+            {% if user.id == request.session.user%}
+                <th class="user_text">{{user.id}}</th>
+    						<th><a href="{% url 'show' user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
+                <th class="user_text">{{user.email}}</th>
+                <th class="user_text">{{user.created_at}}</th>
+                {%if user.user_level != 9%}
+                  {% if user.user_level == 1 %}
+                      <th class="user_text">Normal<br> Online</th>
+                  {% endif %}
+                  {% if user.user_level == 0 %}
+                      <th class="user_text">Normal<br> Offline</th>
+                  {% endif %}
+                {% else %}
+                  <th class="user_text">admin</th>
+                {% endif %}
             {% else %}
-              <th>admin</th>
+                <th>{{user.id}}</th>
+                <th><a href="{% url "show" user_id=user.id%}">{{user.first_name}} {{user.last_name}}</a></th>
+                <th>{{user.email}}</th>
+                <th>{{user.created_at}}</th>
+                {%if user.user_level != 9%}
+                  {% if user.user_level == 1 %}
+                      <th>Normal<br> Online</th>
+                  {% endif %}
+                  {% if user.user_level == 0 %}
+                      <th>Normal<br> Offline</th>
+                  {% endif %}
+                {% else %}
+                  <th>admin</th>
+                {% endif %}
             {% endif %}
           </tr>
         {% endfor %}

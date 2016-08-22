@@ -51,26 +51,26 @@ class UserManager(models.Manager):
         return (True, "none")
 
     def validateLogin(self, request):
-        if request.POST['email'] != 'admin@mail.ru' and request.POST['pw_hash'] != '1111':
-            from bcrypt import hashpw, gensalt
-            errors = []
-            try:
-    	        user = self.get(email=request.POST['email'])
-    	        password = user.pw_hash.encode()
-    	        loginpass = request.POST['password'].encode()
-    	        print password
-    	        print hashpw(loginpass, password)
-    	        if hashpw(loginpass, password) == password:
-    	            return (True, user)
-    	        else:
-    	            errors.append("Sorry, no password match. Please try again.")
-    	            return (False, errors)
-            except ObjectDoesNotExist:
-                pass
-            errors.append("Sorry, no email found. Please try again.")
-            return (False, errors)
-        user = self.get(email=request.POST['email'])
-        return (True, user)
+        from bcrypt import hashpw, gensalt
+        errors = []
+        try:
+            user = self.get(email=request.POST['email'])
+            if user.user_level == 9:
+                if request.POST['password'] != '1111':
+                    errors.append("Sorry, no password match. Please try again.")
+                    return (False, errors)
+                return (True, user, 'admin')
+            password = user.pw_hash.encode()
+    	    loginpass = request.POST['password'].encode()
+    	    if hashpw(loginpass, password) == password:
+    	        return (True, user)
+    	    else:
+        	    errors.append("Sorry, no password match. Please try again.")
+        	    return (False, errors)
+        except ObjectDoesNotExist:
+            pass
+        errors.append("Sorry, no email found. Please try again.")
+        return (False, errors)
 
     def delete(self, user_id):
         self.filter(id = user_id).delete()

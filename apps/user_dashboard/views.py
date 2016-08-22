@@ -46,10 +46,9 @@ def register_process(request):
 
 def login_process(request):
     result = User.manager.validateLogin(request)
-    if result[1] != 'admin':
-        if result[0] == False:
-            print_messages(request, result[1])
-            return redirect(reverse('login'))
+    if result[0] == False:
+        print_messages(request, result[1])
+        return redirect(reverse('login'))
     return log_user_in(request, result[1])
 
 def print_messages(request, message_list):
@@ -58,8 +57,9 @@ def print_messages(request, message_list):
 
 def log_user_in(request, user):
     request.session['user'] = user.id
-    user.user_level = 1
-    user.save(update_fields=None)
+    if user.user_level != 9:
+        user.user_level = 1
+        user.save(update_fields=None)
     return redirect(reverse('show', kwargs={'user_id':request.session['user']}))
 
 def update(request, user_id):
